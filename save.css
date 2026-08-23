@@ -1,0 +1,59 @@
+.nutrition-section {
+    margin-top: 32px;
+}
+    
+.nutrition-summary {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 4px solid var(--main-color);
+    border-radius: 16px;
+    padding: 10px 15px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 0 0 18px;
+    font-size: 2rem;
+}
+
+.meal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+    margin-top: 16px;
+    align-items: stretch;
+}
+
+.meal-day-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 18px 16px;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.meal-day-card:hover {
+    border-color: var(--main-color);
+    transform: translateY(-3px);
+}
+
+.meal-day-card h5 {
+    margin: 0 0 6px;
+    font-size: 1.25rem;
+    color: var(--main-color);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 8px;
+}
+
+.meal-item {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+.meal-item strong {
+    color: var(--text-light);
+    display: block;
+}

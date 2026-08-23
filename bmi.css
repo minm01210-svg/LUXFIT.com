@@ -1,0 +1,248 @@
+/* =========================================================================
+   bmi.css — styles for the LUXFIT BMI Calculator page (bmi.html)
+   The shared site theme (header, navbar, colours) lives in style.css.
+   This file only holds the styles that belong to the BMI page itself.
+   ========================================================================= */
+
+/* ---------- 1. Page shell -------------------------------------------- */
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+}
+.bmi-section {                 /* whole calculator section, sits under fixed header */
+    min-height: 100vh;
+    padding: 12rem 8% 6rem;
+}
+h1 {
+    text-align: center;
+    font-size: 5.2rem;
+    margin-bottom: 4rem;
+    letter-spacing: .1rem;
+}
+h2 { font-size: 2.6rem; margin: 0 0 1.8rem; }
+h3 { font-size: 2rem; }
+
+/* ---------- 2. User profile bar (age + gender) ------------------------ */
+.profile-container {
+    background: var(--snd-bg-color);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 0 5px var(--main-color);
+    padding: 1.8rem 2.2rem;
+    border-radius: 16px;
+    margin-bottom: 2.4rem;
+    display: flex;
+    gap: 1.6rem;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 1.6rem;
+}
+.profile-container strong { color: var(--main-color); font-size: 1.8rem; }
+
+/* ---------- 3. Cards layout ------------------------------------------ */
+.main-container { display: flex; gap: 2rem; align-items: stretch; flex-wrap: wrap; }
+
+.card-left, .card-right, .calorie-card-box {
+    background: var(--snd-bg-color);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 0 5px var(--main-color);
+    padding: 2.4rem;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: all .5s ease;
+}
+.card-left  { flex: 1;   min-width: 300px; }   /* measurements card */
+.card-right { flex: 1.2; min-width: 300px; }   /* diet recommendation card */
+.card-left:hover, .card-right:hover, .calorie-card-box:hover { border: 1px solid var(--main-color); }
+
+/* ---------- 4. Inputs -------------------------------------------------- */
+.input-row {
+    flex: 0 0 auto; display: flex; align-items: center;
+    margin-bottom: 1.6rem; gap: 1rem; font-size: 1.6rem;
+}
+.input-row label { width: 90px; font-weight: 700; }
+
+/* number field + unit chooser glued together in one rounded box */
+.inline-group {
+    display: flex; flex: 1;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    overflow: visible;          /* MUST stay visible so dropdowns can escape */
+    background: var(--bg-color);
+}
+.inline-group input[type="number"] {
+    flex: 1; padding: 1rem; border: none; font-size: 1.5rem;
+    background: transparent; color: var(--text-color); outline: none;
+}
+.inline-group select.unit-select,
+.profile-container select, .profile-container input {
+    background: #1b1b1b; color: var(--text-color);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px; padding: .8rem 1rem; font-size: 1.5rem; cursor: pointer;
+}
+.inline-group select.unit-select { border-radius: 0; border-width: 0 0 0 1px; }
+
+/* ---------- 5. Buttons & result boxes --------------------------------- */
+.calc-btn, .add-btn {
+    width: 100%; padding: 1.2rem;
+    background: var(--main-color); color: var(--bg-color);
+    font-size: 1.6rem; font-weight: 700; letter-spacing: .1rem;
+    border: none; border-radius: 1rem; cursor: pointer;
+    margin: 1rem 0 1.6rem; transition: .5s ease;
+}
+.calc-btn:hover, .add-btn:hover { color: var(--text-color); box-shadow: 0 0 1.6rem var(--main-color); }
+.add-btn { width: auto; padding: 1rem 2.4rem; }
+
+.result-box {
+    background: var(--bg-color);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--main-color); font-weight: 700;
+    padding: 1rem 1.2rem; border-radius: 10px; font-size: 1.6rem;
+    min-height: 0; display: flex; align-items: center;
+}
+#recommendationText { font-size: 1.6rem; line-height: 1.6; color: rgba(255,255,255,.75) !important; }
+
+/* ---------- 6. Food photo gallery ------------------------------------- */
+.image-gallery { display: flex; gap: 1.5rem; margin-top: 1.5rem; flex-wrap: wrap; }
+.food-card { flex: 1; min-width: 120px; text-align: center; }
+.food-card img {
+    width: 100%; height: 120px; object-fit: cover;
+    border-radius: 14px; border: 1px solid rgba(255,255,255,0.1);
+}
+.food-card p { margin-top: .8rem; font-size: 1.4rem; font-weight: 600; }
+
+/* ---------- 7. Meal calorie calculator -------------------------------- */
+.calorie-card-box { margin-top: 2rem; }
+.calorie-card-box p { font-size: 1.5rem; color: rgba(255,255,255,.6) !important; margin-bottom: 1.4rem; }
+
+.food-select-row {
+    display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;
+    background: var(--bg-color); padding: 1.2rem 1.4rem;
+    border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);
+    flex-wrap: wrap; position: relative; font-size: 1.5rem;
+}
+.food-input-container { position: relative; flex: 2; min-width: 180px; }
+.food-name-input, .cal-input, .gram-input {
+    padding: .9rem; border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px; font-size: 1.5rem;
+    background: #1b1b1b; color: var(--text-color); box-sizing: border-box;
+}
+.food-name-input { width: 100%; }
+.cal-input  { width: 90px; opacity: .7; cursor: not-allowed; }  /* filled automatically */
+.gram-input { width: 90px; }
+.kcal-input-container, .portion-input-container { display: flex; align-items: center; gap: .6rem; flex: 1; min-width: 150px; }
+.kcal-input-container span, .portion-input-container span, .item-label { font-size: 1.4rem; color: rgba(255,255,255,.65) !important; }
+
+/* autocomplete suggestion list (local list + USDA results) */
+.autocomplete-items {
+    position: absolute; top: 100%; left: 0; right: 0; z-index: 99;
+    background: #151515; border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 0 0 10px 10px; max-height: 220px; overflow-y: auto;
+    box-shadow: 0 8px 18px rgba(0,0,0,.6);
+}
+.autocomplete-items div {
+    padding: 1rem 1.2rem; cursor: pointer; font-size: 1.4rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex; justify-content: space-between; gap: 1rem;
+}
+.autocomplete-items div:hover { background: rgba(197,123,103,0.15); color: var(--main-color); }
+
+.remove-btn {
+    background: transparent; color: #ff6b6b; border: 1px solid #ff6b6b;
+    padding: .8rem 1.2rem; border-radius: 8px; cursor: pointer;
+    font-size: 1.4rem; font-weight: 700; transition: .3s ease;
+}
+.remove-btn:hover { background: #ff6b6b; color: var(--text-color); }
+
+.total-calorie-box {
+    background: rgba(197,123,103,0.12);
+    border: 1px solid var(--main-color); color: var(--main-color);
+    padding: 1.6rem; border-radius: 12px; font-weight: 700;
+    text-align: center; margin-top: 1.6rem; font-size: 2rem;
+}
+
+.feedback-box { margin-top: 1.2rem; padding: 1.2rem 1.6rem; border-radius: 10px; font-size: 1.5rem; line-height: 1.5; display: none; }
+.feedback-warning       { background: rgba(255,193,7,.12); border: 1px solid #ffc107; color: #ffc107; }
+.feedback-encouragement { background: rgba(0,123,255,.12); border: 1px solid #4dabf7; color: #4dabf7; }
+.feedback-good          { background: rgba(40,167,69,.12); border: 1px solid #45ffca; color: #45ffca; }
+
+/* ---------- 8. "Is this meal suitable for me?" line -------------------- */
+.suitability-box {
+    margin-top: 1rem; padding: 1.4rem 1.6rem; border-radius: 12px;
+    font-size: 1.6rem; line-height: 1.6; text-align: center;
+    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.03);
+    color: rgba(255,255,255,.8);
+}
+.suitability-box strong { display: block; font-size: 1.8rem; margin-bottom: .6rem; }
+.suit-good { border-color: #45ffca; color: #45ffca; background: rgba(69,255,202,.08); }  /* just right */
+.suit-low  { border-color: #4dabf7; color: #4dabf7; background: rgba(77,171,247,.08); }  /* too little */
+.suit-high { border-color: #ffc107; color: #ffc107; background: rgba(255,193,7,.08); }   /* too much  */
+.suit-note { display: block; margin-top: .8rem; font-size: 1.4rem; color: rgba(255,255,255,.7); }
+
+/* ---------- 9. Custom scroll-down choice bars (replace <select>) ------- */
+select.enhanced { display: none !important; }   /* native select is hidden, JS builds the pretty one */
+
+.cselect { position: relative; z-index: 5; font-size: 1.5rem; user-select: none; }
+.cselect-trigger {                              /* the clickable bar showing the current choice */
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 1rem 1.2rem; cursor: pointer; white-space: nowrap;
+    background: #1b1b1b; color: var(--text-color);
+    border: 1px solid rgba(255,255,255,0.15); border-radius: 10px;
+    touch-action: manipulation;
+    transition: border-color .3s ease, box-shadow .3s ease, filter .3s ease;
+}
+.cselect-trigger:hover { border-color: var(--main-color); }
+.cselect.open { z-index: 1400; }
+.cselect.open .cselect-trigger { border-color: var(--main-color); box-shadow: 0 0 8px rgba(197,123,103,.22); }
+.cselect.just-selected .cselect-trigger { filter: brightness(.88); box-shadow: 0 0 4px rgba(197,123,103,.14); } /* brief dim after picking */
+.cselect-trigger i { font-size: 1.8rem; color: var(--main-color); transition: transform .25s ease; }
+.cselect.open .cselect-trigger i { transform: rotate(180deg); }
+
+.cselect-list {                                  /* the drop-down panel */
+    display: none; position: absolute; top: calc(100% + .6rem); left: 0; min-width: 100%;
+    background: #151515; border: 1px solid rgba(255,255,255,0.12); border-radius: 12px;
+    box-shadow: 0 10px 24px rgba(0,0,0,.7); padding: .4rem 0; z-index: 1300;
+    max-height: 220px; overflow-y: auto; scrollbar-width: thin;
+}
+.cselect.open .cselect-list { display: block; }
+.cselect-list li {
+    padding: 1rem 1.4rem; cursor: pointer; white-space: nowrap;
+    color: rgba(255,255,255,.8); transition: .2s ease;
+}
+.cselect-list li:hover    { background: rgba(197,123,103,.15); color: var(--main-color); }
+.cselect-list li.selected { color: var(--main-color); font-weight: 700; }
+
+/* variant used inside .inline-group (unit choosers) */
+.cselect.in-group .cselect-trigger { border-width: 0 0 0 1px; border-radius: 0; height: 100%; }
+.cselect.in-group .cselect-list { left: auto; right: 0; }
+
+/* ---------- 10. Small utility classes (used instead of inline styles) -- */
+.age-input           { width: 70px; }
+.is-hidden           { display: none !important; }
+.feet-container      { flex: 1; }
+.feet-row            { display: flex; gap: 5px; }
+.flex-1              { flex: 1; }
+.section-subtitle    { margin-top: 25px; }
+.gallery-placeholder { font-style: italic; opacity: .6; }
+.cal-value           { color: #28a745; font-weight: bold; }
+.usda-tag            { color: #007bff; }
+.item-label          { font-size: 13px; min-width: 55px; }
+.unit-hint           { font-size: 13px; color: #555; }
+
+/* ---------- 11. Responsive tweaks ------------------------------------- */
+@media (max-width: 991px) {
+    .bmi-section { padding: 10rem 5% 4rem; }
+    h1 { font-size: 4rem; }
+}
+@media (max-width: 768px) {
+    .main-container { flex-direction: column; }
+    .bmi-section { padding: 10rem 4% 4rem; overflow-x: hidden; }
+    .input-row { flex-wrap: wrap; }
+    .input-row label { width: 100%; }
+    #feetContainer { width: 100%; flex: 1 1 100%; }
+    .profile-container { gap: 1rem 1.2rem; }
+    .food-select-row { gap: .8rem; }
+    .food-input-container { flex: 1 1 100%; }
+}

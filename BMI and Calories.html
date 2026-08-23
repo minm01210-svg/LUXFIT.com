@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BMI Calculator & Diet Guide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-container {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 20px;
+            align-items: stretch;
+        }
+
+        .card-left {
+            flex: 1;
+            background-color: #fff;
+            border: 2px solid #333;
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-right {
+            flex: 1.2;
+            background-color: #fff;
+            border: 2px solid #333;
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+
+        .input-row label {
+            width: 80px;
+            font-weight: bold;
+        }
+
+        .inline-group {
+            display: flex;
+            flex: 1;
+            border: 1px solid #777;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .inline-group input {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .inline-group select {
+            padding: 8px;
+            border: none;
+            border-left: 1px solid #777;
+            background-color: #f0f0f0;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .calc-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .calc-btn:hover {
+            background-color: #218838;
+        }
+
+        .result-box {
+            background-color: #e9ecef;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .image-gallery {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .food-card {
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .food-card img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        .food-card p {
+            margin-top: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* Calorie Calculator Section */
+        .calorie-card-box {
+            margin-top: 20px;
+            background-color: #fff;
+            border: 2px solid #333;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .food-select-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+            background-color: #f8f9fa;
+            padding: 10px 14px;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .food-input-container {
+            position: relative;
+            flex: 2;
+            min-width: 180px;
+        }
+
+        .food-name-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        /* Autocomplete Suggestions Box */
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid #d4d4d4;
+            border-bottom: none;
+            border-top: none;
+            z-index: 99;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: #fff;
+            max-height: 180px;
+            overflow-y: auto;
+            box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .autocomplete-items div {
+            padding: 8px 12px;
+            cursor: pointer;
+            background-color: #fff;
+            border-bottom: 1px solid #d4d4d4;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .autocomplete-items div:hover {
+            background-color: #e9e9e9;
+        }
+
+        .kcal-input-container, .portion-input-container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .kcal-input-container input, .portion-input-container input {
+            width: 80px;
+            padding: 7px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .remove-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 7px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .add-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .total-calorie-box {
+            background-color: #e8f4ea;
+            border: 1px solid #28a745;
+            color: #155724;
+            padding: 14px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 18px;
+        }
+
+        .feedback-box {
+            margin-top: 12px;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.4;
+            display: none;
+        }
+
+        .feedback-warning { background-color: #fff3cd; border: 1px solid #ffeeba; color: #856404; }
+        .feedback-encouragement { background-color: #cce5ff; border: 1px solid #b8daff; color: #004085; }
+        .feedback-good { background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+
+        .helper-badge {
+            display: inline-block;
+            background-color: #e2e3e5;
+            color: #383d41;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+
+        <!-- header section code -->
+     <header>
+        <a href="#home" class="logo">LUX<span>FIT</span></a>
+        
+        <div class='bx bx-menu' id="menu-icon"></div>  
+        
+
+
+
+
+<ul class="navbar">
+    <li><a href="index.html">Home</a></li>
+    <li class="services-menu">
+        <a href="#" class="services-toggle" role="button" aria-expanded="false">
+            Services <i class='bx bx-chevron-down'></i>
+        </a>
+    
+        <ul class="dropdown">
+            <!-- Fitness Nested Dropdown -->
+            <li class="has-nested">
+                <a href="#" class="nested-toggle">Fitness <i class='bx bx-chevron-down'></i></a>
+                <ul class="nested-dropdown">
+                    <li><a href="t3.html">Goals</a></li>
+                    <li><a href="bmi.html">BMI and Calories</a></li>
+                    <li><a href="macro-calculator.html">Macro Calculator</a></li>
+                </ul>
+            </li>
+
+            <!-- Skincare Nested Dropdown -->
+            <li class="has-nested">
+                <a href="#" class="nested-toggle">Skincare <i class='bx bx-chevron-down'></i></a>
+                <ul class="nested-dropdown">
+                    <li><a href="head.html">Head</a></li>
+                    <li><a href="body.html">Body</a></li>
+                    <li><a href="hair.html">Hair</a></li>
+                    <li><a href="search.html">Search Engine</a></li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    
+    <li><a href="#plans">Pricing</a></li>
+    <li><a href="#review">Review</a></li>
+    <li><a href="index.html#about">About us</a></li>
+</ul>
+
+
+
+
+    
+        <div class="top-btn">
+            <a href="#" class="nav-btn">Join Us</a>
+        </div>
+     </header>
+
+    <h1>BMI Calculator & Diet Guide</h1>
+
+    <div class="profile-container">
+        <strong>User Profile:</strong>
+        <label for="age">Age:</label>
+        <input type="number" id="age" min="1" max="120" placeholder="e.g. 19" style="width: 70px; padding: 5px;">
+
+        <label for="gender">Gender:</label>
+        <select id="gender" style="padding: 5px;">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+        </select>
+    </div>
+
+    <div class="main-container">
+        <div class="card-left">
+            <h2>Measurements</h2>
+            <div class="input-row">
+                <label for="weight">Weight:</label>
+                <div class="inline-group">
+                    <input type="number" id="weight" step="any" placeholder="e.g. 70">
+                    <select id="weightUnit">
+                        <option value="kg">kg</option>
+                        <option value="lbs">lbs</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-row">
+                <label for="height">Height:</label>
+                <div class="inline-group" id="singleHeightContainer">
+                    <input type="number" id="height" step="any" placeholder="e.g. 160">
+                    <select id="heightUnit" onchange="toggleHeightInput()">
+                        <option value="cm">cm</option>
+                        <option value="m">m</option>
+                        <option value="ft">ft/in</option>
+                    </select>
+                </div>
+
+                <div id="feetContainer" style="display: none; flex: 1;">
+                    <div style="display: flex; gap: 5px;">
+                        <div class="inline-group">
+                            <input type="number" id="feet" placeholder="ft">
+                        </div>
+                        <div class="inline-group">
+                            <input type="number" id="inches" placeholder="in">
+                            <select id="heightUnitFt" onchange="toggleHeightInput()">
+                                <option value="ft">ft/in</option>
+                                <option value="cm">cm</option>
+                                <option value="m">m</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="calc-btn" onclick="processBMI()">Calculate</button>
+
+            <div class="input-row">
+                <label>BMI:</label>
+                <div class="result-box" style="flex: 1;" id="bmiValue">---</div>
+            </div>
+
+            <div class="input-row">
+                <label>Category:</label>
+                <div class="result-box" style="flex: 1;" id="categoryValue">---</div>
+            </div>
+        </div>
+
+        <div class="card-right">
+            <h2>Diet Recommendation</h2>
+            <div id="recommendationText" style="line-height: 1.5; color: #555;">
+                Enter your measurements and click <strong>Calculate</strong> to view your personalized diet guide.
+            </div>
+
+            <h3 style="margin-top: 25px;">Recommended Food Types</h3>
+            <div class="image-gallery" id="foodGallery">
+                <div style="color: #888; font-style: italic;">Food photos will appear here after calculation.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CALORIE CALCULATOR BOX WITH AUTOCOMPLETE -->
+    <div class="calorie-card-box" id="calorieCardBox" style="display: none;">
+        <h2>Custom Meal Calorie Calculator</h2>
+        <p style="font-size: 14px; color: #666; margin-bottom: 8px;">
+            Type in your food items—<strong>auto-suggestions will auto-fill calorie values!</strong> Try typing <em>Pork</em>, <em>Beef</em>, <em>Prawn</em>, or <em>Rice</em>.
+        </p>
+
+        <span class="helper-badge" onclick="alert('Quick Myanmar Benchmark Reference:\n• Water Spinach (Gazun Ywet): ~19 kcal/100g\n• Prawn / Shrimp: ~99 kcal/100g\n• Cooked Rice (Htamin): ~130 kcal/100g\n• Pork Curry (Lean): ~242 kcal/100g\n• Beef Curry: ~250 kcal/100g\n• Mohinga: ~120 kcal/100g\n• Tea Leaf Salad (Laphet Thoke): ~280 kcal/100g')">
+            ℹ️ Quick Myanmar Calorie Reference Guide
+        </span>
+
+        <div id="calorieRowsContainer"></div>
+
+        <button class="add-btn" onclick="addFoodRow()">+ Add Food Item</button>
+
+        <div class="total-calorie-box" id="totalCalorieBox">
+            Estimated Meal Total: 0 kcal
+        </div>
+
+        <div class="feedback-box" id="feedbackBox"></div>
+    </div>
+
+    <script>
+        let currentBMICategory = "Normal weight";
+
+        // Local & Myanmar Calorie Lookup Database (kcal per 100g)
+        const foodDatabase = [
+            // Meats & Seafood
+            { name: "Pork (Lean Curry)", cal: 242 },
+            { name: "Pork Belly (Fatty)", cal: 518 },
+            { name: "Beef (Lean Curry)", cal: 250 },
+            { name: "Prawn / Shrimp", cal: 99 },
+            { name: "Chicken Breast (Grilled/Boiled)", cal: 165 },
+            { name: "Chicken Curry (with Gravy)", cal: 215 },
+            { name: "Freshwater Fish / Hilsa (Nga Hlaing)", cal: 180 },
+            { name: "Fried Fish Fillet", cal: 232 },
+            { name: "Mutton / Goat Curry", cal: 234 },
+
+            // Myanmar Dishes & Staples
+            { name: "Cooked White Rice (Htamin)", cal: 130 },
+            { name: "Cooked Sticky Rice (Kauk Hnyin)", cal: 160 },
+            { name: "Mohinga (Noodles + Soup)", cal: 120 },
+            { name: "Tea Leaf Salad (Laphet Thoke)", cal: 280 },
+            { name: "Shan Noodles (Shan Khauk Swe)", cal: 145 },
+            { name: "Water Spinach (Gazun Ywet)", cal: 19 },
+            { name: "Eggplant Curry (Khayan Thee)", cal: 85 },
+
+            // Eggs & Others
+            { name: "Boiled Egg", cal: 155 },
+            { name: "Fried Egg", cal: 196 },
+            { name: "Steamed Broccoli", cal: 35 },
+            { name: "Apple", cal: 52 },
+            { name: "Banana", cal: 89 }
+        ];
+
+        // Default food rows populated based on BMI result
+        const defaultFoods = {
+            "Underweight": [
+                { name: "Pork (Lean Curry)", calPer100g: 242, defaultGrams: 150 },
+                { name: "Cooked White Rice (Htamin)", calPer100g: 130, defaultGrams: 200 },
+                { name: "Prawn / Shrimp", calPer100g: 99, defaultGrams: 100 }
+            ],
+            "Normal weight": [
+                { name: "Chicken Curry (with Gravy)", calPer100g: 215, defaultGrams: 150 },
+                { name: "Cooked White Rice (Htamin)", calPer100g: 130, defaultGrams: 150 },
+                { name: "Water Spinach (Gazun Ywet)", calPer100g: 19, defaultGrams: 100 }
+            ],
+            "Overweight": [
+                { name: "Prawn / Shrimp", calPer100g: 99, defaultGrams: 150 },
+                { name: "Water Spinach (Gazun Ywet)", calPer100g: 19, defaultGrams: 150 },
+                { name: "Cooked White Rice (Htamin)", calPer100g: 130, defaultGrams: 100 }
+            ],
+            "Obese": [
+                { name: "Water Spinach (Gazun Ywet)", calPer100g: 19, defaultGrams: 200 },
+                { name: "Freshwater Fish / Hilsa (Nga Hlaing)", calPer100g: 180, defaultGrams: 120 },
+                { name: "Steamed Broccoli", calPer100g: 35, defaultGrams: 150 }
+            ]
+        };
+
+        function toggleHeightInput() {
+            const singleUnit = document.getElementById("heightUnit").value;
+            const singleContainer = document.getElementById("singleHeightContainer");
+            const feetContainer = document.getElementById("feetContainer");
+
+            if (singleUnit === "ft") {
+                singleContainer.style.display = "none";
+                feetContainer.style.display = "block";
+                document.getElementById("heightUnitFt").value = "ft";
+            } else {
+                singleContainer.style.display = "flex";
+                feetContainer.style.display = "none";
+            }
+        }
+
+        function calculateBMI(weightKg, heightMeters) {
+            return weightKg / (heightMeters * heightMeters);
+        }
+
+        function getDietDetails(bmi, age, gender) {
+            let category = "";
+            let text = "";
+            let foods = [];
+
+            // Updated Unsplash URLs ensuring reliable image loading
+            if (bmi < 18.5) {
+                category = "Underweight";
+                text = "Focus on a nutrient-dense calorie surplus. Include healthy protein (pork, beef, prawns), whole grains, and healthy fats to build lean mass.";
+                foods = [
+                    { name: "Avocado & Healthy Fats", url: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Nuts & Seeds", url: "https://images.unsplash.com/photo-1508061253366-f7da158b6d46?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Lean Chicken Breast", url: "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=300&q=80" }
+                ];
+            } else if (bmi >= 18.5 && bmi < 25.0) {
+                category = "Normal weight";
+                text = "Maintain a balanced diet with whole foods, lean proteins (prawns, fish, chicken), fresh vegetables, and rice to keep energy levels stable.";
+                foods = [
+                    { name: "Fresh Vegetables", url: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Lean Poultry", url: "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Cooked Rice", url: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=300&q=80" }
+                ];
+            } else if (bmi >= 25.0 && bmi < 30.0) {
+                category = "Overweight";
+                text = "Aim for a slight caloric deficit. Focus on high-fiber greens (Water Spinach), prioritize lean protein (prawns, white fish), and reduce heavy oils.";
+                foods = [
+                    { name: "Leafy Spinach / Greens", url: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Lentils & Beans", url: "https://images.unsplash.com/photo-1551462147-ff29053bfc14?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Fresh Berries", url: "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&w=300&q=80" }
+                ];
+            } else {
+                category = "Obese";
+                text = "Focus on a structured caloric deficit with whole foods. Eliminate deep-fried snacks, sugary drinks, and excess oil in curries.";
+                foods = [
+                    { name: "Steamed Vegetables", url: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Lean Fish Fillet", url: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=300&q=80" },
+                    { name: "Leafy Greens", url: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=300&q=80" }
+                ];
+            }
+
+            if (age < 25) {
+                text += " (Note: As a young adult, make sure you consume sufficient daily protein to fuel active muscle mass.)";
+            } else if (age >= 50) {
+                text += " (Note: Prioritize calcium and protein-rich meals to maintain bone density and muscle retention.)";
+            }
+
+            if (gender === "female") {
+                text += " Include iron-rich greens and healthy essential fats for hormonal health.";
+            } else if (gender === "male") {
+                text += " Keep lean protein levels high for active muscle recovery.";
+            }
+
+            return { category, text, foods };
+        }
+
+        function setupAutocomplete(inputElement, kcalInputElement) {
+            inputElement.addEventListener("input", function() {
+                const val = this.value;
+                closeAllLists();
+                if (!val) return false;
+
+                const listContainer = document.createElement("DIV");
+                listContainer.setAttribute("class", "autocomplete-items");
+                this.parentNode.appendChild(listContainer);
+
+                foodDatabase.forEach(item => {
+                    if (item.name.toLowerCase().includes(val.toLowerCase())) {
+              const itemDiv = document.createElement("DIV");
+                        itemDiv.innerHTML = `<span><strong>${item.name.substr(0, val.length)}</strong>${item.name.substr(val.length)}</span><span style="color:#28a745; font-weight:bold;">${item.cal} kcal</span>`;
+                        
+                        itemDiv.addEventListener("click", function() {
+                            inputElement.value = item.name;
+                            kcalInputElement.value = item.cal;
+                            closeAllLists();
+                            recalculateTotalCalories();
+                        });
+                        listContainer.appendChild(itemDiv);
+                    }
+                });
+            });
+        }
+
+        function closeAllLists(elmnt) {
+            const items = document.getElementsByClassName("autocomplete-items");
+            for (let i = 0; i < items.length; i++) {
+                if (elmnt != items[i]) {
+                    items[i].parentNode.removeChild(items[i]);
+                }
+            }
+        }
+
+        document.addEventListener("click", function (e) {
+            closeAllLists(e.target);
+        });
+
+        function addFoodRow(foodName = "", calPer100g = 150, grams = 100) {
+            const container = document.getElementById("calorieRowsContainer");
+            const row = document.createElement("div");
+            row.className = "food-select-row";
+
+            const itemNum = container.children.length + 1;
+            row.innerHTML = `
+                <strong class="item-label" style="font-size: 13px; min-width: 55px;">Item ${itemNum}:</strong>
+                <div class="food-input-container">
+                    <input type="text" class="food-name-input" value="${foodName}" placeholder="Start typing (Pork, Prawn, Rice...)">
+                </div>
+                <div class="kcal-input-container">
+                    <input type="number" class="cal-input" value="${calPer100g}" min="0" step="5" oninput="recalculateTotalCalories()">
+                    <span style="font-size: 13px; color: #555;">kcal/100g</span>
+                </div>
+                <div class="portion-input-container">
+                    <input type="number" class="gram-input" value="${grams}" min="0" step="5" oninput="recalculateTotalCalories()">
+                    <span style="font-size: 13px; color: #555;">grams (g)</span>
+                </div>
+                <button class="remove-btn" onclick="removeFoodRow(this)">✕</button>
+            `;
+            
+            container.appendChild(row);
+
+            const nameInput = row.querySelector(".food-name-input");
+            const calInput = row.querySelector(".cal-input");
+            setupAutocomplete(nameInput, calInput);
+
+            recalculateTotalCalories();
+        }
+
+        function removeFoodRow(btn) {
+            const row = btn.closest(".food-select-row");
+            row.remove();
+            updateItemLabels();
+            recalculateTotalCalories();
+        }
+
+        function updateItemLabels() {
+            const rows = document.querySelectorAll(".food-select-row");
+            rows.forEach((row, idx) => {
+                let label = row.querySelector(".item-label");
+                if (label) label.textContent = `Item ${idx + 1}:`;
+            });
+        }
+
+        function recalculateTotalCalories() {
+            let total = 0;
+            const rows = document.querySelectorAll(".food-select-row");
+
+            rows.forEach(row => {
+                const calPer100g = parseFloat(row.querySelector(".cal-input").value) || 0;
+                const grams = parseFloat(row.querySelector(".gram-input").value) || 0;
+
+                if (calPer100g > 0 && grams > 0) {
+                    total += (grams / 100) * calPer100g;
+                }
+            });
+
+            const roundTotal = Math.round(total);
+            document.getElementById("totalCalorieBox").textContent = `Estimated Meal Total: ${roundTotal} kcal`;
+
+            evaluateMealCalories(roundTotal);
+        }
+
+        function evaluateMealCalories(totalCalories) {
+            const feedbackBox = document.getElementById("feedbackBox");
+            if (!feedbackBox) return;
+
+            if (totalCalories === 0) {
+                feedbackBox.style.display = "none";
+                return;
+            }
+
+            feedbackBox.style.display = "block";
+            feedbackBox.className = "feedback-box";
+
+            if (currentBMICategory === "Overweight" || currentBMICategory === "Obese") {
+                if (totalCalories > 750) {
+                    feedbackBox.classList.add("feedback-warning");
+                    feedbackBox.innerHTML = `<strong>Gentle Note:</strong> This meal total (${totalCalories} kcal) is quite rich. If you are aiming for a caloric deficit, consider trimming portion sizes slightly or pairing with lighter greens!`;
+                } else {
+                    feedbackBox.classList.add("feedback-good");
+                    feedbackBox.innerHTML = `<strong>Looking Good:</strong> This meal estimate (${totalCalories} kcal) fits well within a balanced, moderate portion for weight management!`;
+                }
+            } else if (currentBMICategory === "Underweight") {
+                if (totalCalories < 500) {
+                    feedbackBox.classList.add("feedback-encouragement");
+                    feedbackBox.innerHTML = `<strong>Gentle Note:</strong> This meal total (${totalCalories} kcal) is relatively light. Adding healthy fats or increasing portion sizes can help reach your energy goals!`;
+                } else {
+                    feedbackBox.classList.add("feedback-good");
+                    feedbackBox.innerHTML = `<strong>Great Choice:</strong> This meal estimate (${totalCalories} kcal) provides a solid, nutrient-dense calorie boost to support your gain goals!`;
+                }
+            } else {
+                if (totalCalories > 850) {
+                    feedbackBox.classList.add("feedback-warning");
+                    feedbackBox.innerHTML = `<strong>Note:</strong> This is a fairly hearty meal (${totalCalories} kcal). Ensure it aligns with your total daily energy needs!`;
+                } else {
+                    feedbackBox.classList.add("feedback-good");
+                    feedbackBox.innerHTML = `<strong>Balanced Meal:</strong> This meal total (${totalCalories} kcal) fits comfortably into a standard daily diet.`;
+                }
+            }
+        }
+
+        function processBMI() {
+            const ageInput = parseInt(document.getElementById("age").value);
+            const genderInput = document.getElementById("gender").value;
+            const weightInput = parseFloat(document.getElementById("weight").value);
+            const weightUnit = document.getElementById("weightUnit").value;
+            
+            const bmiBox = document.getElementById("bmiValue");
+            const categoryBox = document.getElementById("categoryValue");
+            const recommendationText = document.getElementById("recommendationText");
+            const foodGallery = document.getElementById("foodGallery");
+            const calorieCardBox = document.getElementById("calorieCardBox");
+            const calorieRowsContainer = document.getElementById("calorieRowsContainer");
+
+            if (isNaN(ageInput) || ageInput <= 0) {
+                alert("Please enter a valid age in the top profile bar.");
+                return;
+            }
+
+            if (isNaN(weightInput) || weightInput <= 0) {
+                alert("Please enter a valid weight.");
+                return;
+            }
+
+            let weightKg = (weightUnit === "lbs") ? (weightInput * 0.453592) : weightInput;
+            let heightMeters = 0;
+
+            const singleUnit = document.getElementById("heightUnit").value;
+            if (singleUnit === "ft" || document.getElementById("feetContainer").style.display === "block") {
+                const feet = parseFloat(document.getElementById("feet").value) || 0;
+                const inches = parseFloat(document.getElementById("inches").value) || 0;
+                
+                if (feet <= 0 && inches <= 0) {
+                    alert("Please enter valid height values.");
+                    return;
+                }
+                heightMeters = ((feet * 12) + inches) * 0.0254;
+            } else {
+                const heightInput = parseFloat(document.getElementById("height").value);
+                if (isNaN(heightInput) || heightInput <= 0) {
+                    alert("Please enter a valid height.");
+                    return;
+                }
+                heightMeters = (singleUnit === "cm") ? (heightInput / 100) : heightInput;
+            }
+
+            const bmi = calculateBMI(weightKg, heightMeters);
+            const details = getDietDetails(bmi, ageInput, genderInput);
+
+            currentBMICategory = details.category;
+
+            bmiBox.textContent = bmi.toFixed(2);
+            categoryBox.textContent = details.category;
+            recommendationText.textContent = details.text;
+
+            foodGallery.innerHTML = "";
+            calorieRowsContainer.innerHTML = "";
+
+            details.foods.forEach((item) => {
+                const card = document.createElement("div");
+                card.className = "food-card";
+                card.innerHTML = `<img src="${item.url}" alt="${item.name}"><p>${item.name}</p>`;
+                foodGallery.appendChild(card);
+            });
+
+            const initialList = defaultFoods[details.category] || defaultFoods["Normal weight"];
+            initialList.forEach(item => {
+                addFoodRow(item.name, item.calPer100g, item.defaultGrams);
+            });
+
+            calorieCardBox.style.display = "block";
+        }
+    </script>
+
+</body>
+</html>         
