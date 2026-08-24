@@ -481,3 +481,54 @@ section {
         font-size: 50%;
     }
 }
+
+
+
+
+
+
+
+
+
+/* Flexbox သုံးပြီး ပုံများကို ပုံသေ အတိုင်းအတာဖြင့် ဘယ်ညာယှဉ်မည် */
+.image-space-holder {
+    display: flex;
+    flex-direction: row; /* ဘယ်ညာ ဘေးချင်းကပ်ထားမည် */
+    gap: 80px; /* ပုံနှစ်ပုံကြား အကွာအဝေး */
+    overflow-x: auto; /* Screen သေးသွားပါက မညှပ်သွားဘဲ ဘေးသို့ Scroll ဆွဲကြည့်နိုင်ရန် */
+}
+
+/* ပထမဆုံး ပုံတစ်ပုံတည်းကိုပဲ ဘယ်ဘက်ဘောင်ကနေ ပိုခွာချင်ပါက */
+.image-space-holder img:first-child {
+    margin-left: 40px; /* ပထမပုံ၏ ဘယ်ဘက်ကို အပိုခွာပေးမည် */
+}
+
+/* ပုံများ၏ အကျယ်နှင့် အမြင့်ကို ပုံသေ (Fixed Size) သတ်မှတ်ခြင်း */
+.image-space-holder img {
+    width: 350px; /* ပုံ၏ အကျယ်ကို 300px အသေထားမည် (မိမိကြိုက်သလို ပြင်နိုင်ပါတယ်) */
+    height: 300px; /* ပုံ၏ အမြင့်ကို 200px အသေထားမည် */
+    flex-shrink: 0; /* Screen သေးသွားသော်လည်း ပုံကို သေးမသွားစေရန် တားဆီးပေးသည် */
+    object-fit: cover;
+    border-radius: 8px;
+    border: 3px solid  #ffc107;
+}
+
+.image-space-holder1 {
+    display: flex;
+    flex-direction: row; /* ဘယ်ညာ ဘေးချင်းကပ်ထားမည် */
+    gap: 80px; /* ပုံနှစ်ပုံကြား အကွာအဝေး */
+    overflow-x: auto; /* Screen သေးသွားပါက မညှပ်သွားဘဲ ဘေးသို့ Scroll ဆွဲကြည့်နိုင်ရန် */
+}
+
+.image-space-holder1 img:first-child {
+    margin-left: 50px; /* ပထမပုံ၏ ဘယ်ဘက်ကို အပိုခွာပေးမည် */
+}
+
+.image-space-holder1 img {
+    width: 330px; /* ပုံ၏ အကျယ်ကို 300px အသေထားမည် (မိမိကြိုက်သလို ပြင်နိုင်ပါတယ်) */
+    height: 280px; /* ပုံ၏ အမြင့်ကို 200px အသေထားမည် */
+    flex-shrink: 0; /* Screen သေးသွားသော်လည်း ပုံကို သေးမသွားစေရန် တားဆီးပေးသည် */
+    object-fit: cover;
+    border-radius: 8px;
+    border: 3px solid  #ffc107;
+}
